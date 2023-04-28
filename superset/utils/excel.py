@@ -77,7 +77,7 @@ def df_to_escaped_csv(df: pd.DataFrame, **kwargs: Any) -> Any:
                 if isinstance(value, str):
                     df.at[idx, name] = escape_value(value)
 
-    return df.to_csv(**kwargs)
+    return df.to_excel(**kwargs)
 
 
 def get_chart_csv_data(
