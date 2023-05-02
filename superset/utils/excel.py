@@ -16,7 +16,6 @@
 # under the License.
 import logging
 import re
-import io
 from typing import Any
 
 import numpy as np
@@ -63,7 +62,6 @@ def escape_value(value: str) -> str:
 
 def df_to_excel(df: pd.DataFrame, **kwargs: Any) -> Any:
     escape_values = lambda v: escape_value(v) if isinstance(v, str) else v
-    output = io.BytesIO()
 
     # Escape file headers
     df = df.rename(columns=escape_values)
@@ -74,7 +72,6 @@ def df_to_excel(df: pd.DataFrame, **kwargs: Any) -> Any:
             for idx, value in enumerate(column.values):
                 if isinstance(value, str):
                     df.at[idx, name] = escape_value(value)
-                    
-    df.to_excel(**kwargs)
-    return output.getvalue()
+
+    return df.to_excel(**kwargs)
 
