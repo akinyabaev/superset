@@ -64,7 +64,7 @@ def escape_value(value: str) -> str:
     return value
 
 
-def df_to_escaped_csv(df: pd.DataFrame, **kwargs: Any) -> Any:
+def df_to_excel(df: pd.DataFrame, **kwargs: Any) -> Any:
     escape_values = lambda v: escape_value(v) if isinstance(v, str) else v
 
     # Escape csv headers
