@@ -18,6 +18,7 @@ import io
 from typing import Any
 import re
 import pandas as pd
+import numpy as np
 
 negative_number_re = re.compile(r"^-[0-9.]+$")
 
