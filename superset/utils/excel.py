@@ -14,15 +14,10 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-import logging
-import re
+import io
 from typing import Any
-
-import numpy as np
+import re
 import pandas as pd
-
-
-logger = logging.getLogger(__name__)
 
 negative_number_re = re.compile(r"^-[0-9.]+$")
 
@@ -61,17 +56,20 @@ def escape_value(value: str) -> str:
 
 
 def df_to_excel(df: pd.DataFrame, **kwargs: Any) -> Any:
+    output = io.BytesIO()
     escape_values = lambda v: escape_value(v) if isinstance(v, str) else v
 
-    # Escape file headers
+    # Escape csv headers
     df = df.rename(columns=escape_values)
 
-    # Escape file values
+    # Escape csv values
     for name, column in df.items():
         if column.dtype == np.dtype(object):
             for idx, value in enumerate(column.values):
                 if isinstance(value, str):
                     df.at[idx, name] = escape_value(value)
+    # pylint: disable=abstract-class-instantiated
+    with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
+        df.to_excel(writer, **kwargs)
 
-    return df.to_excel(**kwargs)
-
+    return output.getvalue()
