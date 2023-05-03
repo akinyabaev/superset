@@ -29,7 +29,7 @@ def dt_inplace(df: pd.DataFrame) -> pd.DataFrame:
     from pandas.errors import ParserError
     for name in df.columns[df.dtypes == 'object']:
         try:
-            df[name]=pd.to_datetime(df[name])
+            df[name] = pd.to_datetime(df[name])
             df[name] = df[name].dt.tz_localize(None)
         except (ParserError, ValueError):
             pass

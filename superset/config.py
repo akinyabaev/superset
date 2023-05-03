@@ -730,7 +730,7 @@ CSV_EXPORT = {"encoding": "utf-8"}
 # Excel Options: key/value pairs that will be passed as argument to DataFrame.to_excel
 # method.
 # note: index option should not be overridden
-EXCEL_EXPORT = {"encoding": "utf-8"}
+EXCEL_EXPORT = {"encoding": "utf-8", "sep": "\t"}
 
 # ---------------------------------------------------
 # Time grain configurations
