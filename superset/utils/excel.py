@@ -19,25 +19,8 @@ from typing import Any
 import pandas as pd
 
 
-def dt_inplace(df: pd.DataFrame) -> pd.DataFrame:
-    """Automatically detect and convert (in place!) each
-    dataframe column of datatype 'object' to a datetime just
-    when ALL of its non-NaN values can be successfully parsed
-    by pd.to_datetime().  Also returns a ref. to df for
-    convenient use in an expression.
-    """
-    from pandas.errors import ParserError
-    for name in df.columns[df.dtypes == 'object']:
-        try:
-            df[name] = pd.to_datetime(df[name])
-            df[name] = df[name].dt.tz_localize(None)
-        except (ParserError, ValueError):
-            pass
-    return df
-
-
 def df_to_excel(df: pd.DataFrame, **kwargs: Any) -> Any:
-    df = dt_inplace(df)
+    df = df.convert_dtypes()
     output = io.BytesIO()
     # pylint: disable=abstract-class-instantiated
     with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
